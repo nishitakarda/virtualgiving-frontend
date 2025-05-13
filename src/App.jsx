@@ -3,6 +3,7 @@ import './App.css'
 import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
 import Register from './pages/Register'
+import Login from './pages/Login'
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
       <Route path='/' element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/login' element={<Login />} />
       </Route>
     </Routes>
   )

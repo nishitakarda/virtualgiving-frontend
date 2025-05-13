@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -50,16 +52,45 @@ const Register = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      console.log(formData);
-      // Proceed with API call or form submission
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  const validationErrors = validate();
+  if (Object.keys(validationErrors).length > 0) {
+    setErrors(validationErrors);
+  } 
+  else {
+    try {
+      // Determine the endpoint based on the active tab
+      let url = '';
+      if (activeTab === 1) url = 'http://localhost:8080/students';
+      else if (activeTab === 2) url = 'http://localhost:8080/organizations';
+      else if (activeTab === 3) url = 'http://localhost:8080/alumni';
+
+      // Send POST request using axios
+      const response = await axios.post(url, formData);
+
+      // If successful
+      console.log("Registration successful!", response.data);
+      alert("Registration successful!");
+
+      //  clear form
+      setFormData({
+        name: '',
+        email: '',
+        contactNumber: '',
+        password: '',
+        street: '',
+        city: '',
+        state: ''
+      });
+
+    } catch (error) {
+      console.error("Error during registration:", error);
+      alert("Registration failed! Please try again.");
     }
+  }
   };
+
 
   return (
     <div className='absolute top-0 left-0 flex flex-col items-center w-screen h-screen bg-white z-20'>
