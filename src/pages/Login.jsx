@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -34,18 +36,43 @@ const Login = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-    } else {
+      return;
+    }
+    
+    try {
       const userType = activeTab === 1 ? 'Student' : activeTab === 2 ? 'Organization' : 'Alumni';
-      console.log('Login as:', userType);
-      console.log('Login Data:', formData);
-      
+
+      let endpoint = '';
+      if (userType === 'Student') {
+        endpoint = 'http://localhost:8080/students/login';
+      } else if (userType === 'Organization') {
+        endpoint = 'http://localhost:8080/organizations/login';
+      } else if (userType === 'Alumni') {
+        endpoint = 'http://localhost:8080/alumni/login';
+      }
+
+      const response = await axios.post(endpoint, formData);
+
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        alert(`${userType} login successful!`);
+  
+      } else {
+        alert(response.data.message || `${userType} login failed`);
+      }
+  
+    } catch (error) {
+      console.error(`${userType} login error:`, error);
+      alert(`${userType} login failed. Please check your credentials.`);
     }
   };
+
+
 
   return (
     <div className='absolute top-0 left-0 flex flex-col items-center w-screen h-screen bg-white z-20'>
