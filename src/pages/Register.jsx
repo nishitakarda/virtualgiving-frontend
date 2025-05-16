@@ -1,7 +1,10 @@
-import axios from 'axios';
+import axios from '../utils/axiosInstance';
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { loginSuccess } from '../redux/authSlice';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +19,8 @@ const Register = () => {
 
   const [errors, setErrors] = useState({});
   const [activeTab, setActiveTab] = useState(1);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,39 +62,53 @@ const Register = () => {
   const validationErrors = validate();
   if (Object.keys(validationErrors).length > 0) {
     setErrors(validationErrors);
-  } 
-  else {
-    try {
-      // Determine the endpoint based on the active tab
-      let url = '';
-      if (activeTab === 1) url = 'http://localhost:8080/students';
-      else if (activeTab === 2) url = 'http://localhost:8080/organizations';
-      else if (activeTab === 3) url = 'http://localhost:8080/alumni';
-
-      // Send POST request using axios
-      const response = await axios.post(url, formData);
-
-      // If successful
-      console.log("Registration successful!", response.data);
-      alert("Registration successful!");
-
-      //  clear form
-      setFormData({
-        name: '',
-        email: '',
-        contactNumber: '',
-        password: '',
-        street: '',
-        city: '',
-        state: ''
-      });
-
-    } catch (error) {
-      console.error("Error during registration:", error);
-      alert("Registration failed! Please try again.");
-    }
+    return;
   }
-  };
+
+  try {
+    let url = '';
+    let userType = '';
+
+    if (activeTab === 1) {
+      url = '/auth/register/student';
+      userType = 'student';
+    } else if (activeTab === 2) {
+      url = '/auth/register/organization';
+      userType = 'organization';
+    } else if (activeTab === 3) {
+      url = '/auth/register/alumni';
+      userType = 'alumni';
+    }
+
+    // Register user
+    const response = await axios.post(url, formData, { withCredentials: true });
+
+    const token = response.data.token;
+    if (token) {
+      dispatch(loginSuccess({ token, userType }));
+      localStorage.setItem('token', token);
+      alert('Registration successful. You are now logged in!');
+    } else {
+      alert('Registration done, but no token received.');
+    }
+
+    // Clear form
+    setFormData({
+      name: '',
+      email: '',
+      contactNumber: '',
+      password: '',
+      street: '',
+      city: '',
+      state: '',
+    });
+
+  } catch (error) {
+    console.error('Error during registration:', error);
+    alert('Registration failed! Please try again.');
+  }
+};
+
 
 
   return (

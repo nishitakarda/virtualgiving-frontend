@@ -1,7 +1,9 @@
-import axios from 'axios';
+import axios from '../utils/axiosInstance';
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../redux/authSlice';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +13,7 @@ const Login = () => {
 
   const [errors, setErrors] = useState({});
   const [activeTab, setActiveTab] = useState(1); 
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,40 +40,43 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
+  e.preventDefault();
+  const validationErrors = validate();
+  if (Object.keys(validationErrors).length > 0) {
+    setErrors(validationErrors);
+    return;
+  }
+
+  try {
+    let url = '';
+    let userType = '';
+
+    if (activeTab === 1) {
+      url = '/auth/login/student';
+      userType = 'student';
+    } else if (activeTab === 2) {
+      url = '/auth/login/organization';
+      userType = 'organization';
+    } else if (activeTab === 3) {
+      url = '/auth/login/alumni';
+      userType = 'alumni';
     }
-    
-    try {
-      const userType = activeTab === 1 ? 'Student' : activeTab === 2 ? 'Organization' : 'Alumni';
 
-      let endpoint = '';
-      if (userType === 'Student') {
-        endpoint = 'http://localhost:8080/students/login';
-      } else if (userType === 'Organization') {
-        endpoint = 'http://localhost:8080/organizations/login';
-      } else if (userType === 'Alumni') {
-        endpoint = 'http://localhost:8080/alumni/login';
-      }
+    const response = await axios.post(url, formData, { withCredentials: true });
 
-      const response = await axios.post(endpoint, formData);
-
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        alert(`${userType} login successful!`);
-  
-      } else {
-        alert(response.data.message || `${userType} login failed`);
-      }
-  
-    } catch (error) {
-      console.error(`${userType} login error:`, error);
-      alert(`${userType} login failed. Please check your credentials.`);
+    if (response.data.token) {
+      const token = response.data.token;
+      dispatch(loginSuccess({ token, userType }));
+      localStorage.setItem('token', token);
+      alert('Login successful!');
+    } else {
+      alert(response.data.message || 'Login failed');
     }
-  };
+  } catch (error) {
+    console.error('Login error:', error);
+    alert('Login failed. Please check your credentials.');
+  }
+};
 
 
 
