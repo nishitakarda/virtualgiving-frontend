@@ -1,7 +1,7 @@
 import axios from '../utils/axiosInstance';
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../redux/authSlice';
 
@@ -14,6 +14,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [activeTab, setActiveTab] = useState(1); 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,26 +49,28 @@ const Login = () => {
   }
 
   try {
-    let url = '';
-    let userType = '';
+     
+    let role = '';
 
     if (activeTab === 1) {
-      url = '/auth/login/student';
-      userType = 'student';
+      role = 'STUDENT'
     } else if (activeTab === 2) {
-      url = '/auth/login/organization';
-      userType = 'organization';
+     role = 'ORGANIZATION'
     } else if (activeTab === 3) {
-      url = '/auth/login/alumni';
-      userType = 'alumni';
+      role = 'ALUMNI'
     }
 
-    const response = await axios.post(url, formData, { withCredentials: true });
+    const response = await axios.post('/auth/login', { email:formData.email, password:formData.password}, { withCredentials: true });
 
     if (response.data.token) {
       const token = response.data.token;
-      dispatch(loginSuccess({ token, userType }));
+      const email = response.data.email;
+      const role = response.data.role;
+      dispatch(loginSuccess({ token, email, role }));
       localStorage.setItem('token', token);
+      localStorage.setItem('email', email);
+      localStorage.setItem('role', role);
+      navigate('/');
       alert('Login successful!');
     } else {
       alert(response.data.message || 'Login failed');
