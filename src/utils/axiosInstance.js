@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { store } from '../redux/store'; 
-import { loginSuccess, logout } from '../redux/authSlice';
+import { store } from '../redux/store';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'https://virtualgiving-backend.onrender.com/api', //'http://localhost:8080/api',
   withCredentials: true,
 });
 
@@ -16,23 +15,5 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-axiosInstance.interceptors.response.use(
-  (res) => res,
-  async (err) => {
-    if (err.response?.status === 401) {
-      try {
-        const res = await axios.post('http://localhost:8080/refresh-token', {}, { withCredentials: true });
-        const newToken = res.data.token;
-        store.dispatch(loginSuccess({ token: newToken, userType: store.getState().auth.userType }));
-        err.config.headers.Authorization = `Bearer ${newToken}`;
-        return axios(err.config);
-      } catch (refreshErr) {
-        store.dispatch(logout());
-        return Promise.reject(refreshErr);
-      }
-    }
-    return Promise.reject(err);
-  }
-);
 
 export default axiosInstance;
