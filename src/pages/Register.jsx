@@ -14,7 +14,8 @@ const Register = () => {
     password: '',
     street: '',
     city: '',
-    state: ''
+    state: '',
+    role:''
   });
 
   const [errors, setErrors] = useState({});
@@ -66,28 +67,31 @@ const Register = () => {
   }
 
   try {
-    let url = '';
-    let userType = '';
+    
+    let role = '';
 
     if (activeTab === 1) {
-      url = '/auth/register/student';
-      userType = 'student';
+      role = 'STUDENT'
     } else if (activeTab === 2) {
-      url = '/auth/register/organization';
-      userType = 'organization';
+     role = 'ORGANIZATION'
     } else if (activeTab === 3) {
-      url = '/auth/register/alumni';
-      userType = 'alumni';
+      role = 'ALUMNI'
     }
 
     // Register user
-    const response = await axios.post(url, formData, { withCredentials: true });
+    const response = await axios.post('/auth/signup', {name:formData.name, email:formData.email, password:formData.password, role}, { withCredentials: true });
 
     const token = response.data.token;
+
     if (token) {
-      dispatch(loginSuccess({ token, userType }));
-      localStorage.setItem('token', token);
-      alert('Registration successful. You are now logged in!');
+      const token = response.data.token;
+            const email = response.data.email;
+            const role = response.data.role;
+            dispatch(loginSuccess({ token, email, role }));
+            localStorage.setItem('token', token);
+            localStorage.setItem('email', email);
+            localStorage.setItem('role', role);
+      navigate('/')
     } else {
       alert('Registration done, but no token received.');
     }
@@ -101,6 +105,7 @@ const Register = () => {
       street: '',
       city: '',
       state: '',
+      role:''
     });
 
   } catch (error) {
@@ -108,8 +113,6 @@ const Register = () => {
     alert('Registration failed! Please try again.');
   }
 };
-
-
 
   return (
     <div className='absolute top-0 left-0 flex flex-col items-center w-screen h-screen bg-white z-20'>
