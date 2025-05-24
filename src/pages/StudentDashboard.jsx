@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Sidebar from '../components/Sidebar';
-import Topbar from '../components/Topbar';
-import DashboardCard from '../components/DashboardCard';
+import Sidebar from '../components/StudentDashboard/Sidebar';
+import Topbar from '../components/StudentDashboard/Topbar';
+import DashboardCard from '../components/StudentDashboard/DashboardCard';
 import {
   FaFolderOpen,
   FaRocket,
@@ -52,7 +52,6 @@ const Dashboard = () => {
             <p className="text-sm text-gray-500">Quick insights about your activity</p>
           </div>
 
-          {/* Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {cardData.map((card, idx) => (
               <DashboardCard key={idx} {...card} />

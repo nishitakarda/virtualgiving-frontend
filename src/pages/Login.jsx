@@ -1,5 +1,4 @@
 import axios from '../utils/axiosInstance';
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -41,47 +40,53 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  const validationErrors = validate();
-  if (Object.keys(validationErrors).length > 0) {
-    setErrors(validationErrors);
-    return;
-  }
-
-  try {
-     
-    let role = '';
-
-    if (activeTab === 1) {
-      role = 'STUDENT'
-    } else if (activeTab === 2) {
-     role = 'ORGANIZATION'
-    } else if (activeTab === 3) {
-      role = 'ALUMNI'
+    e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
     }
 
-    const response = await axios.post('/auth/login', { email:formData.email, password:formData.password}, { withCredentials: true });
+    try {
+      let role = '';
+      if (activeTab === 1) role = 'STUDENT';
+      else if (activeTab === 2) role = 'ORGANIZATION';
+      else if (activeTab === 3) role = 'ALUMNI';
 
-    if (response.data.token) {
-      const token = response.data.token;
-      const email = response.data.email;
-      const role = response.data.role;
-      dispatch(loginSuccess({ token, email, role }));
-      localStorage.setItem('token', token);
-      localStorage.setItem('email', email);
-      localStorage.setItem('role', role);
-      navigate('/');
-      alert('Login successful!');
-    } else {
-      alert(response.data.message || 'Login failed');
+      const response = await axios.post('/auth/login', {
+        email: formData.email,
+        password: formData.password
+      }, { withCredentials: true });
+
+      if (response.data.token) {
+        const token = response.data.token;
+        const email = response.data.email;
+        const role = response.data.role;
+
+        dispatch(loginSuccess({ token, email, role }));
+        localStorage.setItem('token', token);
+        localStorage.setItem('email', email);
+        localStorage.setItem('role', role);
+
+        if (role === 'STUDENT') {
+          navigate('/student-dashboard');
+        } else if (role === 'ORGANIZATION') {
+          navigate('/organization-dashboard');
+        } else if (role === 'ALUMNI') {
+          navigate('/alumni-dashboard');
+        } else {
+          navigate('/');
+        }
+
+        alert('Login successful!');
+      } else {
+        alert(response.data.message || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('Login failed. Please check your credentials.');
     }
-  } catch (error) {
-    console.error('Login error:', error);
-    alert('Login failed. Please check your credentials.');
-  }
-};
-
-
+  };
 
   return (
     <div className='absolute top-0 left-0 flex flex-col items-center w-screen h-screen bg-white z-20'>
@@ -100,8 +105,7 @@ const Login = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="flex border border-gray-200 bg-white shadow-lg rounded-b-lg flex-col gap-4 overflow-auto min-w-md p-6">
-        {[
-          { name: 'email', type: 'email', placeholder: 'Enter your email' },
+        {[{ name: 'email', type: 'email', placeholder: 'Enter your email' },
           { name: 'password', type: 'password', placeholder: 'Enter your password' }
         ].map(({ name, type, placeholder }) => (
           <div key={name}>
@@ -122,7 +126,7 @@ const Login = () => {
         </button>
       </form>
 
-      <p className='mt-4'>Don't have an account? <Link to={'/register'} className='text-blue-500'>Register</Link> </p>
+      <p className='mt-4'>Don't have an account? <Link to={'/register'} className='text-blue-500'>Register</Link></p>
     </div>
   );
 };

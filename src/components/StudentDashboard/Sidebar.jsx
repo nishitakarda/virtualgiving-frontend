@@ -17,7 +17,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     { to: '/applications', label: 'My Applications', icon: <FaFileAlt /> },
     { to: '/mentorship-requests', label: 'Mentorship Requests', icon: <FaClipboardList /> },
     { to: '/donation-requests', label: 'Donation Requests', icon: <FaDonate /> },
-    { to: '/internship-applications', label: 'Internship Applications', icon: <FaBriefcase /> },
+    { to: '/internship-opportunities', label: 'Internship Opportunities', icon: <FaBriefcase /> },
     { to: '/settings', label: 'Settings', icon: <FaCog /> },
   ];
 
