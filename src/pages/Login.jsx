@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../redux/authSlice';
+import RoleSwitcher from '../components/RoleSwitcher';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -77,8 +78,6 @@ const Login = () => {
         } else {
           navigate('/');
         }
-
-        alert('Login successful!');
       } else {
         alert(response.data.message || 'Login failed');
       }
@@ -89,45 +88,41 @@ const Login = () => {
   };
 
   return (
-    <div className='absolute top-0 left-0 flex flex-col items-center w-screen h-screen bg-white z-20'>
-      <p className='text-3xl m-12'>Login</p>
+   <div className='absolute top-0 left-0 flex flex-col justify-center w-screen h-screen bg-white dark:bg-gray-900 z-90 text-center p-4'>
+         <img src="/logo2.png" className='w-32 mx-auto mb-4' alt="" />
+         <p className='text-3xl mb-12'>Login</p>
+   
+       <RoleSwitcher onChange={(role)=>setRole(role)} />
 
-      <div className='flex justify-between w-md items-center'>
-        <button onClick={() => setActiveTab(1)} className={`border-gray-200 bg-gray-50 opacity-75 rounded-t-xl p-2 grow ${activeTab === 1 ? "border border-b-0 translate-y-0.5 px-8 bg-white opacity-100" : ""}`}>
-          Student
-        </button>
-        <button onClick={() => setActiveTab(2)} className={`border-gray-200 bg-gray-50 opacity-75 rounded-t-xl p-2 grow ${activeTab === 2 ? "border translate-y-0.5 px-8 border-b-0 bg-white opacity-100" : ""}`}>
-          Organization
-        </button>
-        <button onClick={() => setActiveTab(3)} className={`border-gray-200 bg-gray-50 opacity-75 rounded-t-xl p-2 grow ${activeTab === 3 ? "border translate-y-0.5 px-8 border-b-0 bg-white opacity-100" : ""}`}>
-          Alumni
-        </button>
-      </div>
-
-      <form onSubmit={handleSubmit} className="flex border border-gray-200 bg-white shadow-lg rounded-b-lg flex-col gap-4 overflow-auto min-w-md p-6">
-        {[{ name: 'email', type: 'email', placeholder: 'Enter your email' },
-          { name: 'password', type: 'password', placeholder: 'Enter your password' }
-        ].map(({ name, type, placeholder }) => (
-          <div key={name}>
-            <input
-              name={name}
-              type={type}
-              value={formData[name]}
-              onChange={handleChange}
-              placeholder={placeholder}
-              className="w-full px-4 py-3 bg-gray-50 rounded-lg focus:outline-0"
-            />
-            {errors[name] && <p className="text-red-500 text-sm mt-1">{errors[name]}</p>}
-          </div>
-        ))}
-
-        <button type="submit" className="w-full bg-sky-600 text-white p-2 rounded-lg hover:bg-blue-700">
-          Login
-        </button>
-      </form>
-
-      <p className='mt-4'>Don't have an account? <Link to={'/register'} className='text-blue-500'>Register</Link></p>
-    </div>
+           
+         <form onSubmit={handleSubmit} className="flex  bg-white dark:bg-gray-800/50 shadow-lg rounded-lg flex-col gap-4 overflow-auto mx-auto p-6 w-full max-w-lg">
+           {[
+             { name: 'email', type: 'email', placeholder: 'Enter your email' },
+             { name: 'password', type: 'password', placeholder: 'Enter password' },
+             
+           ].map(({ name, type = 'text', placeholder }) => (
+             <div key={name}>
+               <input
+                 name={name}
+                 type={type}
+                 value={formData[name]}
+                 onChange={handleChange}
+                 placeholder={placeholder}
+                 className="w-full px-4 py-3  bg-white dark:bg-gray-800 rounded-lg focus:outline-0"
+               />
+               {errors[name] && <p className="text-red-500 text-left text-sm mt-1">{errors[name]}</p>}
+             </div>
+           ))}
+   
+           <div className="col-span-2">
+             <button type="submit" className="w-full bg-teal-600 text-white p-2 rounded-lg hover:bg-teal-700">
+               Login
+             </button>
+           </div>
+         </form>
+   
+         <p className='mt-4'>Already have an account? <Link to={'/register'} className='text-teal-500'>Register</Link> </p>
+       </div>
   );
 };
 

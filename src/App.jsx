@@ -18,10 +18,10 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/student-dashboard' element={<StudentDashboard />} />
+        <Route path='/dashboard' element={<StudentDashboard />} />
         <Route path='/internship-opportunities' element={<InternshipOpportunities />} />
         <Route path='/applied-internships' element={<AppliedInternships />} />
-        <Route path='/student-profile' element={<StudentProfile />} />
+        <Route path='/profile' element={<StudentProfile />} />
         <Route path='/internship-manager' element={<InternshipManager />} />
       </Route>
     </Routes>

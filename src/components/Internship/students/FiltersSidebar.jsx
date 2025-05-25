@@ -16,11 +16,11 @@ const FiltersSidebar = ({ filters, onFilterChange }) => {
   };
 
   return (
-    <aside className="w-64 p-4 bg-white shadow-md">
-      <h1 className="text-xl font-bold mb-4">Customize Your Search</h1>
+    <aside className="w-[20%] p-8 dark:bg-gray-700/40 dark:text-gray-400 shadow-md">
+      <h1 className="text-xl font-bold mb-4 dark:text-white">Customize Your Search</h1>
 
       <div className="mb-4">
-        <label htmlFor="category" className="block text-md font-semibold">
+        <label htmlFor="category" className="block text-md font-semibold dark:text-white">
           Internship Category
         </label>
         <select
@@ -28,7 +28,7 @@ const FiltersSidebar = ({ filters, onFilterChange }) => {
           name="category"
           value={filters.category}
           onChange={onFilterChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 rounded dark:text-white dark:bg-gray-800"
         >
           <option value="">All</option>
           <option value="Software Engineer">Software Engineer</option>
@@ -38,7 +38,7 @@ const FiltersSidebar = ({ filters, onFilterChange }) => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-md font-semibold mb-1">Internship Type</label>
+        <label className="block text-md font-semibold mb-1 dark:text-white">Internship Type</label>
         <div className="space-y-1">
           {["Full Time", "Part Time", "Freelance"].map((typeOption) => (
             <label key={typeOption} className="flex items-center space-x-2 text-sm">
@@ -57,7 +57,7 @@ const FiltersSidebar = ({ filters, onFilterChange }) => {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="location" className="block text-md font-semibold">
+        <label htmlFor="location" className=" dark:text-white block text-md font-semibold">
           Internship Location
         </label>
         <select
@@ -65,7 +65,7 @@ const FiltersSidebar = ({ filters, onFilterChange }) => {
           name="location"
           value={filters.location}
           onChange={onFilterChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 rounded dark:text-white dark:bg-gray-800"
         >
           <option value="">All</option>
           <option value="Remote">Remote</option>
@@ -75,7 +75,7 @@ const FiltersSidebar = ({ filters, onFilterChange }) => {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="duration" className="block text-md font-semibold">
+        <label htmlFor="duration" className="block text-md font-semibold dark:text-white">
           Internship Duration
         </label>
         <select
@@ -83,7 +83,7 @@ const FiltersSidebar = ({ filters, onFilterChange }) => {
           name="duration"
           value={filters.duration}
           onChange={onFilterChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 rounded dark:text-white dark:bg-gray-800"
         >
           <option value="">All</option>
           <option value="Less than 2 months">Less than 2 months</option>
@@ -94,7 +94,7 @@ const FiltersSidebar = ({ filters, onFilterChange }) => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-md font-semibold mb-1">Salary Range</label>
+        <label className="block text-md font-semibold dark:text-white mb-1">Salary Range</label>
         <div className="space-y-1">
           {[
             "0-10k",

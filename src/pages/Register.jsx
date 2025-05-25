@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginSuccess } from '../redux/authSlice';
+import RoleSwitcher from '../components/RoleSwitcher';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,8 @@ const Register = () => {
     state: '',
     role:''
   });
+
+  const [role, setRole] = useState('Student');
 
   const [errors, setErrors] = useState({});
   const [activeTab, setActiveTab] = useState(1);
@@ -67,16 +70,8 @@ const Register = () => {
   }
 
   try {
+    console.log({name:formData.name, email:formData.email, password:formData.password, role});
     
-    let role = '';
-
-    if (activeTab === 1) {
-      role = 'STUDENT'
-    } else if (activeTab === 2) {
-     role = 'ORGANIZATION'
-    } else if (activeTab === 3) {
-      role = 'ALUMNI'
-    }
 
     // Register user
     const response = await axios.post('/auth/signup', {name:formData.name, email:formData.email, password:formData.password, role}, { withCredentials: true });
@@ -115,22 +110,13 @@ const Register = () => {
 };
 
   return (
-    <div className='absolute top-0 left-0 flex flex-col items-center w-screen h-screen bg-white z-20'>
-      <p className='text-3xl m-12'>Registration</p>
+    <div className='absolute top-0 left-0 flex flex-col justify-center w-screen h-screen bg-white dark:bg-gray-900 z-90 text-center p-4'>
+      <img src="/logo2.png" className='w-32 mx-auto mb-4' alt="" />
+      <p className='text-3xl mb-12'>Signup</p>
 
-      <div className='flex justify-between w-md items-center'>
-        <button onClick={() => setActiveTab(1)} className={`border-gray-200 bg-gray-50 opacity-75 rounded-t-xl p-2 grow ${activeTab === 1 ? "border border-b-0 translate-y-0.5 px-8 bg-white opacity-100" : ""}`}>
-          Student
-        </button>
-        <button onClick={() => setActiveTab(2)} className={`border-gray-200 bg-gray-50 opacity-75 rounded-t-xl p-2 grow ${activeTab === 2 ? "border translate-y-0.5 px-8 border-b-0 bg-white opacity-100" : ""}`}>
-          Organization
-        </button>
-        <button onClick={() => setActiveTab(3)} className={`border-gray-200 bg-gray-50 opacity-75 rounded-t-xl p-2 grow ${activeTab === 3 ? "border translate-y-0.5 px-8 border-b-0 bg-white opacity-100" : ""}`}>
-          Alumni
-        </button>
-      </div>
+    <RoleSwitcher onChange={(role)=>setRole(role)} />
 
-      <form onSubmit={handleSubmit} className="flex border border-gray-200 bg-white shadow-lg rounded-b-lg flex-col gap-4 overflow-auto min-w-md p-6">
+      <form onSubmit={handleSubmit} className="flex dark:bg-gray-800/50  bg-white shadow-lg rounded-lg flex-col gap-4 overflow-auto mx-auto p-6 w-full max-w-lg">
         {[
           { name: 'name', placeholder: 'Enter your name' },
           { name: 'email', type: 'email', placeholder: 'Enter your email' },
@@ -147,20 +133,20 @@ const Register = () => {
               value={formData[name]}
               onChange={handleChange}
               placeholder={placeholder}
-              className="w-full px-4 py-3 bg-gray-50 rounded-lg focus:outline-0"
+              className="w-full px-4 py-3   dark:bg-gray-800 bg-gray-50 rounded-lg focus:outline-0"
             />
-            {errors[name] && <p className="text-red-500 text-sm mt-1">{errors[name]}</p>}
+            {errors[name] && <p className="text-red-500 text-left text-sm mt-1">{errors[name]}</p>}
           </div>
         ))}
 
         <div className="col-span-2">
-          <button type="submit" className="w-full bg-sky-600 text-white p-2 rounded-lg hover:bg-blue-700">
+          <button type="submit" className="w-full bg-teal-600 text-white p-2 rounded-lg hover:bg-teal-700">
             Create new account
           </button>
         </div>
       </form>
 
-      <p className='mt-4'>Already have an account? <Link to={'/login'} className='text-blue-500'>Login</Link> </p>
+      <p className='mt-4'>Already have an account? <Link to={'/login'} className='text-teal-500'>Login</Link> </p>
     </div>
   );
 };

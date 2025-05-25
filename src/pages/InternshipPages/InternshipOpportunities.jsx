@@ -29,7 +29,7 @@ const staticInternships = [
     duration: "2 months",
     salary: "10k-20k",
     description: "Develop RESTful APIs.",
-    logoUrl: "https://logo.clearbit.com/codeworks.com"
+    logoUrl: "https://logo.clearbit.com/techcorp.com"
   },
   {
     id: 3,
@@ -42,7 +42,7 @@ const staticInternships = [
     duration: "Less than 2 months",
     salary: "0-10k",
     description: "Contribute to agile team development.",
-    logoUrl: "https://logo.clearbit.com/devstudio.com"
+    logoUrl: "https://logo.clearbit.com/techcorp.com"
   }
 ];
 
@@ -105,13 +105,12 @@ const InternshipOpportunities = () => {
   });
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
-      <InternshipTopbar />
+    <div className="flex flex-col grow">
 
-      <div className="flex flex-1">
+      <div className="flex flex-1 ">
         <FiltersSidebar filters={filters} onFilterChange={handleFilterChange} />
 
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-8">
           <h1 className="text-2xl font-bold mb-6">Latest Internship Opportunities</h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">

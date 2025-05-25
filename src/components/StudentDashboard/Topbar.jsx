@@ -1,15 +1,16 @@
 import React from 'react';
 import { FaBars, FaBell, FaUserCircle } from 'react-icons/fa';
+import ThemeToggle from '../ThemeToggle';
 
 const Topbar = ({ toggleSidebar }) => {
   return (
-    <div className="w-full bg-white shadow flex justify-between items-center px-6 py-4">
+    <div className="w-full bg-white z-40 text-gray-900 dark:bg-gray-900 dark:text-white/70 shadow flex justify-between items-center px-6 py-4">
       <div className="flex items-center space-x-4">
         <FaBars
           className="text-2xl cursor-pointer md:hidden"
           onClick={toggleSidebar}
         />
-        <span className="text-sm text-gray-500 hidden sm:inline">
+        <span className="text-sm  hidden sm:inline">
           Home / Dashboard / Students
         </span>
       </div>
@@ -18,11 +19,13 @@ const Topbar = ({ toggleSidebar }) => {
         <input
           type="text"
           placeholder="Search here..."
-          className="border rounded-full px-3 py-1 text-sm text-gray-600 focus:outline-none focus:ring focus:ring-blue-200"
+          className="bg-gray-100 dark:bg-gray-800 rounded-full px-3 py-1 text-sm  "
         />
-        <FaBell className="text-xl cursor-pointer text-gray-700" />
-        <FaUserCircle className="text-2xl cursor-pointer text-gray-700" />
+        <FaBell className="text-xl cursor-pointer " />
+        <FaUserCircle className="text-2xl cursor-pointer " />
+           <ThemeToggle />
       </div>
+    
     </div>
   );
 };

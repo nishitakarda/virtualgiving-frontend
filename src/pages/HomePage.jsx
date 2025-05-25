@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../utils/axiosInstance'
+import ImageCarousel from '../components/ImagesCarousel';
+import ImpactMetrics from '../components/ImpactMetrices';
 
 const HomePage = () => {
   const [user, setUser] = useState(null);
@@ -13,8 +15,9 @@ const HomePage = () => {
    getData();
   },[]);
   return (
-    <div className='flex flex-col items-center gap-4 justify-center grow'>
-     <div className='text-2xl'>Welcome <span className='text-sky-500'>{user?.name}</span> <span className='text-sm'>({user?.role})</span> </div>
+    <div className='flex flex-col items-center gap-4 grow'>
+      <ImageCarousel />
+      <ImpactMetrics />
     </div>
   )
 }
