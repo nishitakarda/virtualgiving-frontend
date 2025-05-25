@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-const roles = ['Student', 'Organization', 'Alumni'];
+const roles = ['STUDENT', 'ORGANIZATION', 'ALUMNI'];
 
 const RoleSwitcher = ({ onChange }) => {
-  const [activeRole, setActiveRole] = useState('Student');
+  const [activeRole, setActiveRole] = useState('STUDENT');
 
   const handleSwitch = (role) => {
     setActiveRole(role);
