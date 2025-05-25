@@ -69,15 +69,9 @@ const Login = () => {
         localStorage.setItem('email', email);
         localStorage.setItem('role', role);
 
-        if (role === 'STUDENT') {
-          navigate('/student-dashboard');
-        } else if (role === 'ORGANIZATION') {
-          navigate('/organization-dashboard');
-        } else if (role === 'ALUMNI') {
-          navigate('/alumni-dashboard');
-        } else {
+        
           navigate('/');
-        }
+        
       } else {
         alert(response.data.message || 'Login failed');
       }
