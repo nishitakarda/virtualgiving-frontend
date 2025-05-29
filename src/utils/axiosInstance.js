@@ -2,7 +2,7 @@ import axios from 'axios';
 import { store } from '../redux/store';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://virtualgiving-backend.onrender.com/api', //'http://localhost:8080/api',
+  baseURL: 'https://virtualgiving-backend.onrender.com/api',// 'http://localhost:8080/api',
   withCredentials: true,
 });
 

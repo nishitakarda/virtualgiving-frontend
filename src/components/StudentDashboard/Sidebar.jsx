@@ -16,13 +16,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const links = [
     { to: '/', label: 'Home', icon: <FaHome /> },
     { to: '/profile', label: 'Profile', icon: <FaUserCircle /> },
-    { to: '/dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
+    { to: '/student-dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
     { to: '/notifications', label: 'Notifications', icon: <FaBell /> },
     { to: '/opportunities', label: 'Opportunities', icon: <FaBullhorn /> },
     { to: '/applications', label: 'My Applications', icon: <FaFileAlt /> },
     { to: '/mentorship-requests', label: 'Mentorship Requests', icon: <FaClipboardList /> },
     { to: '/donation-requests', label: 'Donation Requests', icon: <FaDonate /> },
     { to: '/internship-opportunities', label: 'Internship Opportunities', icon: <FaBriefcase /> },
+    { to: '/applied-internships', label: 'Internship Applications', icon: <FaFileAlt /> },
     { to: '/settings', label: 'Settings', icon: <FaCog /> },
   ];
 
@@ -70,30 +71,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       </nav>
       </div>
 
-      <div className="px-4 pb-6">
-       {
-        token ?   <button
-          onClick={() => {
-            navigate('/login');
-            localStorage.removeItem('token');
-          }
-          }
-          className="w-full flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-500 transition-colors text-white py-2 rounded"
-        >
-          <FaSignOutAlt /> Logout
-        </button> : <div className='flex gap-4'>
-         <Link to={'/register'}
-          className="w-full flex items-center justify-center gap-2 border border-teal-600 hover:bg-gray-500 transition-colors text-teal-600 py-2 rounded"
-        >Signup
-        </Link>
-           <Link to={'/login'}
-          className="w-full flex items-center justify-center gap-2 bg-teal-600 hover:bg-gray-500 transition-colors text-white py-2 rounded"
-        >Login
-        </Link>
-        </div>
-       }
       
-      </div>
     </div>
   );
 };

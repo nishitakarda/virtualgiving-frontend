@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FiltersSidebar from "../../components/Internship/students/FiltersSidebar";
 import InternshipCard from "../../components/Internship/students/InternshipCard";
-import InternshipTopbar from "../../components/Internship/students/InternshipTopbar";
 
 const staticInternships = [
   {

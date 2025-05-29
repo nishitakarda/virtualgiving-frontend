@@ -7,15 +7,17 @@ const HostSidebar = ({ setActivePage, activePage }) => {
   ];
 
   return (
-    <div className="w-60 bg-white border-r p-4 shadow-md">
-      <h2 className="text-lg font-semibold mb-4">Internship Manager</h2>
+    <div className="w-60 bg-white dark:bg-gray-600/40 border-r dark:border-gray-800 p-4 shadow-md dark:shadow-gray-900 text-gray-800 dark:text-gray-200">
+      <h2 className="text-xl font-bold mb-5 dark:text-white">Internship Manager</h2>
       <ul className="space-y-3">
         {menuItems.map(({ label, key }) => (
           <li
             key={key}
             onClick={() => setActivePage(key)}
-            className={`cursor-pointer p-2 rounded-lg ${
-              activePage === key ? 'bg-blue-100 text-blue-700' : 'hover:bg-gray-100'
+            className={`cursor-pointer px-4 py-2 rounded-lg transition-all font-medium ${
+              activePage === key
+                ? 'bg-blue-100 text-blue-500 dark:bg-blue-400/20 dark:text-blue-400'
+                : 'hover:bg-gray-100 dark:hover:bg-gray-600'
             }`}
           >
             {label}

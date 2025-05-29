@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Sidebar from '../components/StudentDashboard/Sidebar';
-import Topbar from '../components/StudentDashboard/Topbar';
+import Topbar from '../components/AppTopbar';
 import DashboardCard from '../components/StudentDashboard/DashboardCard';
 import {
   FaFolderOpen,

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 const ViewApplications = () => {
   const [applications, setApplications] = useState([
-    //default for now (temporary)
     {
       id: 1,
       name: 'Nishita Karda',
@@ -17,7 +16,7 @@ const ViewApplications = () => {
       category: 'Backend Developer',
       location: 'Bangalore',
       resume: '/resumes/rohan.pdf',
-      status: 'Approved',
+      status: 'Pending',
     },
     {
       id: 3,
@@ -25,41 +24,46 @@ const ViewApplications = () => {
       category: 'Full Stack Developer',
       location: 'Delhi',
       resume: '/resumes/priya.pdf',
-      status: 'Pending',
+      status: 'Rejected',
     },
   ]);
 
   const handleStatusChange = (id, newStatus) => {
-    setApplications(prev =>
-      prev.map(app =>
-        app.id === id ? { ...app, status: newStatus } : app
-      )
+    setApplications((prev) =>
+      prev.map((app) => (app.id === id ? { ...app, status: newStatus } : app))
     );
   };
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold text-blue-900 mb-6">View Applications</h2>
+      <h2 className="text-2xl font-bold text-sky-700 dark:text-sky-400 mb-6">
+        View Applications
+      </h2>
+
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border rounded shadow">
-          <thead>
-            <tr className="bg-gray-100 text-gray-700 text-left text-sm">
-              <th className="px-4 py-3 border-b">#</th>
-              <th className="px-4 py-3 border-b">Student Name</th>
-              <th className="px-4 py-3 border-b">Category</th>
-              <th className="px-4 py-3 border-b">Location</th>
-              <th className="px-4 py-3 border-b">Resume</th>
-              <th className="px-4 py-3 border-b">Action</th>
+        <table className="min-w-full table-fixed bg-white dark:bg-gray-800 rounded-lg shadow">
+          <thead className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 uppercase text-sm">
+            <tr>
+              <th className="w-12 px-4 py-3 text-left">#</th>
+              <th className="w-1/5 px-4 py-3 text-left">Student Name</th>
+              <th className="w-1/5 px-4 py-3 text-left">Category</th>
+              <th className="w-1/5 px-4 py-3 text-left">Location</th>
+              <th className="w-1/5 px-4 py-3 text-left">Resume</th>
+              <th className="w-1/5 px-4 py-3 text-left">Status</th>
             </tr>
           </thead>
-          <tbody>
+
+          <tbody className="text-gray-800 dark:text-gray-100">
             {applications.map((app, index) => (
-              <tr key={app.id} className="text-sm text-gray-800">
-                <td className="px-4 py-3 border-b">{index + 1}</td>
-                <td className="px-4 py-3 border-b">{app.name}</td>
-                <td className="px-4 py-3 border-b">{app.category}</td>
-                <td className="px-4 py-3 border-b">{app.location}</td>
-                <td className="px-4 py-3 border-b">
+              <tr
+                key={app.id}
+                className="border-t border-gray-300 dark:border-gray-700"
+              >
+                <td className="px-4 py-3">{index + 1}</td>
+                <td className="px-4 py-3">{app.name}</td>
+                <td className="px-4 py-3">{app.category}</td>
+                <td className="px-4 py-3">{app.location}</td>
+                <td className="px-4 py-3">
                   <a
                     href={app.resume}
                     target="_blank"
@@ -69,21 +73,24 @@ const ViewApplications = () => {
                     View PDF
                   </a>
                 </td>
-                <td className="px-4 py-3 border-b">
+                <td className="px-4 py-3">
                   <select
                     value={app.status}
-                    onChange={(e) => handleStatusChange(app.id, e.target.value)}
-                    className={`w-32 px-2 py-1 border rounded text-sm bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      app.status === 'Pending'
-                        ? 'text-yellow-600 border-yellow-300'
-                        : app.status === 'Approved'
-                        ? 'text-green-600 border-green-300'
-                        : 'text-red-600 border-red-300'
-                    }`}
+                    onChange={(e) =>
+                      handleStatusChange(app.id, e.target.value)
+                    }
+                    className={`w-full px-2 py-1 border rounded text-sm bg-gray-100 focus:outline-none dark:bg-gray-700 focus:ring-2 focus:ring-blue-500
+                      ${
+                        app.status === 'Pending'
+                          ? 'text-yellow-600 border-yellow-300'
+                          : app.status === 'Approved'
+                          ? 'text-green-600 border-green-300'
+                          : 'text-red-600 border-red-300'
+                      }`}
                   >
-                    <option value="Pending" className="text-yellow-800">Pending</option>
-                    <option value="Approved" className="text-green-600">Approved</option>
-                    <option value="Rejected" className="text-red-600">Rejected</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
                   </select>
                 </td>
               </tr>

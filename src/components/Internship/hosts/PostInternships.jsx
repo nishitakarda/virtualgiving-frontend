@@ -35,13 +35,11 @@ const PostInternships = () => {
     const logoUrl = logoFile ? URL.createObjectURL(logoFile) : '';
     const finalData = { ...formData, logoUrl };
 
-    // Save to localStorage
     const existingInternships = JSON.parse(localStorage.getItem("postedInternships")) || [];
     localStorage.setItem("postedInternships", JSON.stringify([...existingInternships, finalData]));
 
     alert("Internship posted successfully!");
 
-    // Reset form
     setFormData({
       title: '',
       companyName: '',
@@ -59,41 +57,42 @@ const PostInternships = () => {
 
   return (
     <div className="flex justify-center mt-8 px-4">
-      <div className="w-full max-w-3xl bg-white p-6 rounded-lg shadow-md overflow-y-auto max-h-[calc(100vh-7rem)]">
-        <h1 className="text-2xl font-bold text-sky-700 mb-6">Post Internships</h1>
+      <div className="w-full max-w-3xl bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md overflow-y-auto max-h-[calc(100vh-7rem)]">
+        <h1 className="text-2xl font-bold text-sky-700 dark:text-sky-400 mb-6">Post Internships</h1>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+
           <div>
-            <label className="block font-medium mb-1">Internship Title</label>
+            <label className="block font-medium mb-1 text-gray-800 dark:text-gray-200">Internship Title</label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-black dark:text-white border-gray-300 dark:border-gray-600"
             />
           </div>
 
           <div>
-            <label className="block font-medium mb-1">Company Name</label>
+            <label className="block font-medium mb-1 text-gray-800 dark:text-gray-200">Company Name</label>
             <input
               type="text"
               name="companyName"
               value={formData.companyName}
               onChange={handleChange}
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-black dark:text-white border-gray-300 dark:border-gray-600"
             />
           </div>
 
           <div>
-            <label className="block font-medium mb-1">Upload Company Logo</label>
+            <label className="block font-medium mb-1 text-gray-800 dark:text-gray-200">Upload Company Logo</label>
             <input
               type="file"
               accept="image/*"
               onChange={handleLogoChange}
-              className="block w-full p-2 border border-gray-300 rounded cursor-pointer bg-white text-sm"
+              className="block w-full p-2 border rounded cursor-pointer bg-white dark:bg-gray-800 text-sm text-black dark:text-white border-gray-300 dark:border-gray-600"
             />
             {logoFile && (
               <img
@@ -105,37 +104,37 @@ const PostInternships = () => {
           </div>
 
           <div>
-            <label className="block font-medium mb-1">Posted By</label>
+            <label className="block font-medium mb-1 text-gray-800 dark:text-gray-200">Posted By</label>
             <input
               type="text"
               name="postedBy"
               value={formData.postedBy}
               onChange={handleChange}
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-black dark:text-white border-gray-300 dark:border-gray-600"
             />
           </div>
 
           <div>
-            <label className="block font-medium mb-1">Internship Description</label>
+            <label className="block font-medium mb-1 text-gray-800 dark:text-gray-200">Internship Description</label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
               rows="4"
               required
-              className="w-full p-2 border rounded resize-none"
+              className="w-full p-2 border rounded resize-none bg-white dark:bg-gray-800 text-black dark:text-white border-gray-300 dark:border-gray-600"
             />
           </div>
 
           <div>
-            <label className="block font-medium mb-1">Category</label>
+            <label className="block font-medium mb-1 text-gray-800 dark:text-gray-200">Category</label>
             <select
               name="category"
               value={formData.category}
               onChange={handleChange}
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-black dark:text-white border-gray-300 dark:border-gray-600"
             >
               <option value="">Select Category</option>
               <option value="Software Engineer">Software Engineer</option>
@@ -146,13 +145,13 @@ const PostInternships = () => {
           </div>
 
           <div>
-            <label className="block font-medium mb-1">Location</label>
+            <label className="block font-medium mb-1 text-gray-800 dark:text-gray-200">Location</label>
             <select
               name="location"
               value={formData.location}
               onChange={handleChange}
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-black dark:text-white border-gray-300 dark:border-gray-600"
             >
               <option value="">Select Location</option>
               <option value="Remote">Remote</option>
@@ -163,13 +162,13 @@ const PostInternships = () => {
           </div>
 
           <div>
-            <label className="block font-medium mb-1">Type</label>
+            <label className="block font-medium mb-1 text-gray-800 dark:text-gray-200">Type</label>
             <select
               name="type"
               value={formData.type}
               onChange={handleChange}
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-black dark:text-white border-gray-300 dark:border-gray-600"
             >
               <option value="">Select Type</option>
               <option value="Full Time">Full Time</option>
@@ -179,13 +178,13 @@ const PostInternships = () => {
           </div>
 
           <div>
-            <label className="block font-medium mb-1">Salary Range</label>
+            <label className="block font-medium mb-1 text-gray-800 dark:text-gray-200">Salary Range</label>
             <select
               name="salary"
               value={formData.salary}
               onChange={handleChange}
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-black dark:text-white border-gray-300 dark:border-gray-600"
             >
               <option value="">Select Salary</option>
               <option value="0-10k">0-10k</option>
@@ -196,13 +195,13 @@ const PostInternships = () => {
           </div>
 
           <div>
-            <label className="block font-medium mb-1">Duration</label>
+            <label className="block font-medium mb-1 text-gray-800 dark:text-gray-200">Duration</label>
             <select
               name="duration"
               value={formData.duration}
               onChange={handleChange}
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-black dark:text-white border-gray-300 dark:border-gray-600"
             >
               <option value="">Select Duration</option>
               <option value="Less than 2 months">Less than 2 months</option>
@@ -215,7 +214,7 @@ const PostInternships = () => {
           <button
             type="submit"
             disabled={uploading}
-            className="bg-black text-white px-6 py-2 rounded-4xl hover:bg-gray-800 transition cursor-pointer"
+            className="bg-black text-white px-6 py-2 rounded-xl hover:bg-gray-800 transition"
           >
             {uploading ? 'Uploading...' : 'Post Internship'}
           </button>

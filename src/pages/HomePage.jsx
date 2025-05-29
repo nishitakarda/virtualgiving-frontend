@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../utils/axiosInstance'
+import NavBar from '../components/HomeNavbar';
 import ImageCarousel from '../components/ImagesCarousel';
 import ImpactMetrics from '../components/ImpactMetrices';
 
@@ -16,6 +17,7 @@ const HomePage = () => {
   },[]);
   return (
     <div className='flex flex-col items-center gap-4 grow'>
+      <NavBar />
       <ImageCarousel />
       <ImpactMetrics />
     </div>
