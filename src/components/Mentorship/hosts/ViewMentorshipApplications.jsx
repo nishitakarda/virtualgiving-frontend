@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import axiosInstance from '../../../utils/axiosInstance';
 import LoadingSpinner from '../../LoadingSpinner';
 
-const ViewApplications = () => {
+const ViewMentorshipApplications = () => {
   const [applications, setApplications] = useState([]);
   const { id } = useParams();
 
@@ -82,7 +82,7 @@ const ViewApplications = () => {
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:underline font-medium"
                   >
-                    {app.resume ? "View" : "Not available"}
+                    View
                   </a>
                 </td>
                 <td className="px-4 py-3">
@@ -91,7 +91,12 @@ const ViewApplications = () => {
                       handleStatusChange(app.id, e.target.value)
                     }
                     className={`w-full px-2 py-1 border rounded text-sm bg-gray-100 focus:outline-none dark:bg-gray-700 focus:ring-2 focus:ring-blue-500
-                      `}
+                      ${app.status === 'PENDING'
+                        ? 'text-yellow-600 border-yellow-300'
+                        : app.status === 'SELECTED'
+                          ? 'text-green-600 border-green-300'
+                          : 'text-red-600 border-red-300'
+                      }`}
                   >
                     <option hidden value="Pending">Pending</option>
                     <option selected={app.status == "SELECTED"} value="Selected">Selected</option>
@@ -107,4 +112,4 @@ const ViewApplications = () => {
   );
 };
 
-export default ViewApplications;
+export default ViewMentorshipApplications;

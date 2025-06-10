@@ -1,22 +1,9 @@
-import React from 'react';
 import { FaBars, FaBell, FaUserCircle } from 'react-icons/fa';
-import ThemeToggle from './ThemeToggle';
+import ThemeToggle from './theme/ThemeToggle';
+import { useLocation } from 'react-router-dom';
 
-const Topbar = ({ toggleSidebar }) => {
-  const role = localStorage.getItem('role') ; 
-
-  const getBreadcrumb = () => {
-    switch (role) {
-      case 'STUDENT':
-        return 'Home / Dashboard / Student';
-      case 'ORGANIZATION':
-        return 'Home / Dashboard / Organization';
-      case 'ALUMNI':
-        return 'Home / Dashboard / Alumni';
-      default:
-        return 'Home / Dashboard';
-    }
-  };
+const AppTopbar = ({ toggleSidebar }) => {
+  const location = useLocation();
 
   return (
     <div className="w-full bg-white z-40 text-gray-900 dark:bg-gray-900 dark:text-white/70 shadow flex justify-between items-center px-6 py-4">
@@ -25,7 +12,7 @@ const Topbar = ({ toggleSidebar }) => {
           className="text-2xl cursor-pointer md:hidden"
           onClick={toggleSidebar}
         />
-        <span className="text-sm hidden sm:inline">{getBreadcrumb()}</span>
+        <span className="text-sm hidden sm:inline">{location.pathname}</span>
       </div>
 
       <div className="flex items-center space-x-4">

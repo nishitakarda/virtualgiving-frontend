@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import Topbar from '../AppTopbar';
+import AppTopbar from '../AppTopbar';
+import StudentSidebar from './StudentSidebar';
 
 const StudentLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -12,7 +12,7 @@ const StudentLayout = () => {
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50 text-gray-700 dark:bg-gray-800 dark:text-white">
-      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+      <StudentSidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
       {sidebarOpen && (
         <div
@@ -22,7 +22,7 @@ const StudentLayout = () => {
       )}
 
       <div className="flex-1 flex flex-col">
-        <Topbar toggleSidebar={toggleSidebar} />
+        <AppTopbar toggleSidebar={toggleSidebar} />
         <div className="grow flex flex-col overflow-y-auto">
           <Outlet />
         </div>

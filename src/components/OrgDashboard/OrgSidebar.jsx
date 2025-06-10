@@ -1,23 +1,22 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import {
-  FaUserCircle, FaTachometerAlt, FaBell, FaBullhorn, FaClipboardList,
-  FaFileAlt, FaCog, FaHome, FaPlusCircle
+  FaBullhorn, FaClipboardList,
+  FaFileAlt,
+  FaPlusCircle,
+  FaTachometerAlt,
+  FaUserCircle
 } from 'react-icons/fa';
+import { Link, useLocation } from 'react-router-dom';
 
 const OrgSidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
 
   const links = [
-    { to: '/', label: 'Home', icon: <FaHome /> },
     { to: '/org-profile', label: 'Profile', icon: <FaUserCircle /> },
     { to: '/org-dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
-    { to: '/notifications', label: 'Notifications', icon: <FaBell /> },
     { to: '/post-opportunity', label: 'Post Opportunity', icon: <FaPlusCircle /> },
     { to: '/manage-opportunities', label: 'Manage Opportunities', icon: <FaBullhorn /> },
     { to: '/view-mentorship-requests', label: 'Mentorship Requests', icon: <FaClipboardList /> },
     { to: '/internship-manager', label: 'Manage Internships', icon: <FaFileAlt /> },
-    { to: '/settings', label: 'Settings', icon: <FaCog /> },
   ];
 
   const linkClasses = 'flex items-center gap-4 px-3 py-2 rounded transition-colors duration-200';

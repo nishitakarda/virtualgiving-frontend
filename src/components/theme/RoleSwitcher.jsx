@@ -11,7 +11,7 @@ const RoleSwitcher = ({ onChange }) => {
   };
 
   return (
-    <div className="inline-flex bg-gray-200 dark:bg-gray-800 dark:text-white dark mx-auto w-fit mb-4 rounded-full p-1 shadow-md">
+    <div className="inline-flex dark mx-auto w-fit mb-4 rounded-full p-1 shadow-md">
       {roles.map((role) => (
         <button
           key={role}
@@ -19,7 +19,7 @@ const RoleSwitcher = ({ onChange }) => {
           className={`px-6 py-2 rounded-full text-sm font-medium transition-all
             ${activeRole === role
               ? 'bg-teal-600 text-white shadow'
-              : 'text-gray-400 hover:bg-gray-900'}`}
+              : 'text-gray-500 '}`}
         >
           {role}
         </button>

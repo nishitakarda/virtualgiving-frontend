@@ -1,40 +1,34 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useState } from "react";
 import LoadingSpinner from '../../components/LoadingSpinner';
+import RequestMentorship from "../../components/Mentorship/hosts/RequestMentorship";
 import axiosInstance from "../../utils/axiosInstance";
 
-const AppliedInternships = () => {
+const MentorshipRequests = () => {
 
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   const fetchInternships = async () => {
     setLoading(true);
-    try {
-      const response = await axiosInstance.get('/applications/my');
+    const response = await axiosInstance.get('/applications/my');
 
-      if (response.status == 200) {
-        setApplications(response.data);
-      } else {
-        console.log(response);
-      }
-    } catch (e) {
-      toast.error(e.message);
+    if (response.status == 200) {
+      setApplications(response.data);
+    } else {
+      console.log(response);
     }
     setLoading(false);
   }
 
-  useEffect(() => {
-    fetchInternships();
-  }, []);
 
   return (
     <>
       {loading && <LoadingSpinner />}
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 px-6 py-8">
-        <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-          Applied Internships
+
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 px-6 py-4 md:py-8">
+        <h1 className="text-lg md:text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+          Mentorship Requests
         </h1>
 
         <div className="overflow-x-auto">
@@ -71,10 +65,12 @@ const AppliedInternships = () => {
                   </tr>
                 ))}
               </tbody>
-            </table> : <div className="w-48 flex flex-col text-center gap-4  absolute top-[50%] left-[25%] md:left-[50%] -translate-y-[50%]">
-              <img src="/not_found.webp" />
-              <Link to={'/internship-opportunities'} className="text-teal-600 border border-teal-600 p-4 rounded">Find Internships</Link>
-            </div>
+            </table> : showForm ? <RequestMentorship handleCancel={() => setShowForm(false)} />
+              :
+              <div className="w-48 flex flex-col text-center gap-4  absolute top-[50%] left-[25%] md:left-[50%] -translate-y-[50%]">
+                <img src="/not_found.webp" />
+                <button onClick={() => setShowForm(true)} to={'/internship-opportunities'} className="text-white shadow bg-teal-600 p-4 rounded">Request Mentorship</button>
+              </div>
           }
         </div>
       </div>
@@ -82,4 +78,4 @@ const AppliedInternships = () => {
   );
 };
 
-export default AppliedInternships;
+export default MentorshipRequests;

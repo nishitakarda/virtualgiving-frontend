@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { FaUsers, FaClock, FaHeart, FaHandsHelping } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
+import { FaClock, FaHandsHelping, FaHeart, FaUsers } from 'react-icons/fa';
 
 // Metric data with target numbers
 const metrics = [

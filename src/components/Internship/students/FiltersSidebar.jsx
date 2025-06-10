@@ -1,4 +1,3 @@
-import React from "react";
 
 const FiltersSidebar = ({ filters, onFilterChange }) => {
   const handleCheckboxChange = (e) => {
@@ -16,7 +15,7 @@ const FiltersSidebar = ({ filters, onFilterChange }) => {
   };
 
   return (
-    <aside className="w-[20%] p-8 dark:bg-gray-700/40 dark:text-gray-400 shadow-md">
+    <aside className="w-[20%] hidden md:block p-8 dark:bg-gray-700/40 dark:text-gray-400 shadow-md">
       <h1 className="text-xl font-bold mb-4 dark:text-white">Customize Your Search</h1>
 
       <div className="mb-4">

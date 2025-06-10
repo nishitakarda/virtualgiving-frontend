@@ -1,4 +1,3 @@
-import React from 'react';
 import { IconContext } from 'react-icons';
 
 const AlumniDashboardCard = ({ title, icon, value, subtext }) => {

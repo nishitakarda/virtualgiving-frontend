@@ -1,8 +1,6 @@
-import React from 'react'
-import NavBar from './HomeNavbar'
-import { Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom';
 
-const Layout = () => {
+const MainLayout = () => {
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50 text-gray-700 dark:bg-gray-800 dark:text-white">
       <div className="flex-1 flex flex-col">

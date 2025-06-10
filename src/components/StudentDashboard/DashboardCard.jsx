@@ -1,4 +1,3 @@
-import React from 'react';
 import { IconContext } from 'react-icons';
 
 const DashboardCard = ({ title, icon, value, subtext }) => {

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import OrgSidebar from './OrgSidebar';
-import OrgTopbar from '../AppTopbar';  
+import OrgTopbar from '../components/AppTopbar';
+import OrgSidebar from '../components/OrgDashboard/OrgSidebar';
 
 const OrgLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
