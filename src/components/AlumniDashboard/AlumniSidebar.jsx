@@ -2,16 +2,20 @@ import {
   FaBriefcase,
   FaClipboardList,
   FaDonate,
+  FaSearch,
+  FaSignOutAlt,
   FaTachometerAlt,
   FaUserCircle
 } from 'react-icons/fa';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const AlumniSidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const links = [
     { to: '/alumni-profile', label: 'Profile', icon: <FaUserCircle /> },
+    { to: '/alumni/all-users', label: 'Search', icon: <FaSearch /> },
     { to: '/alumni-dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
     { to: '/mentorship-requests', label: 'Mentorship Requests', icon: <FaClipboardList /> },
     { to: '/donation-requests', label: 'Donation Requests', icon: <FaDonate /> },
@@ -21,26 +25,45 @@ const AlumniSidebar = ({ isOpen, toggleSidebar }) => {
     { to: '/post-mentorship', label: 'Post Mentorship', icon: <FaBriefcase /> },
   ];
 
-  const linkClasses = 'flex items-center gap-4 px-3 py-2 rounded transition-colors duration-200';
-  const hoverClasses = 'hover:dark:bg-gray-900/30 hover:dark:text-white hover:bg-gray-100 hover:font-bold';
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login');
+  };
+
+  const linkClasses =
+    'flex items-center gap-4 px-4 py-2 rounded-md transition-colors duration-200';
+  const hoverClasses =
+    'hover:bg-gray-100 hover:dark:bg-gray-900 hover:text-black hover:dark:text-white hover:font-bold';
 
   return (
-    <div className={`z-70 flex flex-col justify-between top-0 left-0 h-screen w-80 shadow-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-300
-    transition-transform duration-300 ease-in-out transform gap-4 fixed ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:static md:translate-x-0`}>
+    <div
+      className={`z-50 flex flex-col justify-between top-0 left-0 h-screen w-80 shadow-lg bg-white dark:bg-gray-800 
+      transition-transform duration-300 ease-in-out transform fixed 
+      ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:static md:translate-x-0`}
+    >
+      {/* Top Section */}
       <div>
-        <div className="text-center py-4 border-b border-gray-300 relative">
-          <img className='w-24 mx-auto' src="/logo2.png" alt="Logo" />
-          <h1 className="text-lg px-4 py-1 font-semibold">Virtual Giving & Volunteering</h1>
+        <div className="text-center flex items-center justify-between p-4 border-b border-gray-300 dark:border-gray-700 relative">
+          <div className="flex items-center gap-2">
+            <img className="w-10" src="/logo2.png" alt="Logo" />
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Virtual Giving
+            </h1>
+          </div>
+
+          {/* Close button for mobile */}
           <button
             onClick={toggleSidebar}
-            className="absolute right-4 top-4 text-gray-400 md:hidden"
+            className="md:hidden text-2xl text-gray-500 hover:text-red-500 transition"
           >
             ✕
           </button>
         </div>
 
-        <nav className="overflow-y-auto px-2 py-6">
-          <ul className="space-y-1">
+        {/* Navigation Links */}
+        <nav className="overflow-y-auto px-4 py-6">
+          <ul className="space-y-2">
             {links.map(({ to, label, icon }) => {
               const isActive = location.pathname === to;
               return (
@@ -48,15 +71,27 @@ const AlumniSidebar = ({ isOpen, toggleSidebar }) => {
                   <Link
                     to={to}
                     onClick={toggleSidebar}
-                    className={`${linkClasses} ${hoverClasses} ${isActive ? 'bg-gray-200 dark:bg-gray-900/30 font-bold' : ''}`}
+                    className={`${linkClasses} ${hoverClasses} ${isActive ? 'bg-gray-200 dark:bg-gray-700 font-bold' : ''
+                      }`}
                   >
-                    {icon} {label}
+                    {icon} <span>{label}</span>
                   </Link>
                 </li>
               );
             })}
           </ul>
         </nav>
+      </div>
+
+      {/* Logout Section */}
+      <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 justify-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded transition"
+        >
+          <FaSignOutAlt />
+          Logout
+        </button>
       </div>
     </div>
   );

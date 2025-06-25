@@ -6,15 +6,32 @@ import LoadingSpinner from '../../LoadingSpinner';
 
 const ViewApplications = () => {
   const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
-  const handleStatusChange = async (id, newStatus) => {
+  const fetchApplications = async () => {
     try {
       setLoading(true);
-      const response = await axiosInstance.put(`/applications/${id}/status`, {}, { params: { status: newStatus.toUpperCase() } });
-      console.log(response);
+      const response = await axiosInstance.get(`/applications/internship/${id}`);
+      if (response.status === 200) {
+        setApplications(response.data);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      if (response.status == 200) {
+  const handleStatusChange = async (appId, newStatus) => {
+    try {
+      setLoading(true);
+      const response = await axiosInstance.put(
+        `/applications/${appId}/status`,
+        {},
+        { params: { status: newStatus.toUpperCase() } }
+      );
+      if (response.status === 200) {
         toast.success('Status Updated', { position: 'top-center' });
         fetchApplications();
       }
@@ -25,81 +42,72 @@ const ViewApplications = () => {
     }
   };
 
-  const [loading, setLoading] = useState(false);
-
-  const fetchApplications = async () => {
-    try {
-      setLoading(true);
-      const response = await axiosInstance.get(`/applications/internship/${id}`);
-      console.log(response);
-
-      if (response.status == 200) {
-        setApplications(response.data);
-      }
-    } catch (error) {
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
     fetchApplications();
   }, []);
 
-  if (loading) return <LoadingSpinner />
-  else return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold text-sky-700 dark:text-sky-400 mb-6">
-        View Applications
+  if (loading) return <LoadingSpinner />;
+
+  return (
+    <div className="p-6 md:w-full max-w-7xl mx-auto">
+      <h2 className="md:text-3xl font-semibold text-sky-700 dark:text-sky-400 mb-6 text-center">
+        Internship Applications
       </h2>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full table-fixed bg-white dark:bg-gray-800 rounded-lg shadow">
-          <thead className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 uppercase text-sm">
+      <div className="overflow-x-auto rounded-lg shadow-lg">
+        <table className="min-w-full bg-white dark:bg-gray-900 text-sm rounded-lg">
+          <thead className="bg-sky-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 uppercase">
             <tr>
-              <th className="w-12 px-4 py-3 text-left">ID</th>
-              <th className="w-1/5 px-4 py-3 text-left">Student Name</th>
-              <th className="w-1/5 px-4 py-3 text-left">email</th>
-              <th className="w-1/5 px-4 py-3 text-left">Resume</th>
-              <th className="w-1/5 px-4 py-3 text-left">Status</th>
+              <th className="px-4 py-3 text-left">ID</th>
+              <th className="px-4 py-3 text-left">Student Name</th>
+              <th className="px-4 py-3 text-left">Email</th>
+              <th className="px-4 py-3 text-left">Resume</th>
+              <th className="px-4 py-3 text-left">Status</th>
             </tr>
           </thead>
-
-          <tbody className="text-gray-800 dark:text-gray-100">
+          <tbody>
             {applications.map((app, index) => (
               <tr
                 key={app.id}
-                className="border-t border-gray-300 dark:border-gray-700"
+                className="border-t border-gray-200 dark:border-gray-700 hover:bg-sky-50 dark:hover:bg-gray-800 transition"
               >
                 <td className="px-4 py-3">{index + 1}</td>
                 <td className="px-4 py-3">{app?.student?.name}</td>
                 <td className="px-4 py-3">{app?.student?.email}</td>
                 <td className="px-4 py-3">
-                  <a
-                    href={app.resume}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline font-medium"
-                  >
-                    {app.resume ? "View" : "Not available"}
-                  </a>
+                  {app.resume ? (
+                    <a
+                      href={app.resume}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      View
+                    </a>
+                  ) : (
+                    <span className="text-gray-400 italic">Not available</span>
+                  )}
                 </td>
                 <td className="px-4 py-3">
                   <select
-                    onChange={(e) =>
-                      handleStatusChange(app.id, e.target.value)
-                    }
-                    className={`w-full px-2 py-1 border rounded text-sm bg-gray-100 focus:outline-none dark:bg-gray-700 focus:ring-2 focus:ring-blue-500
-                      `}
+                    value={app.status?.toUpperCase() || "PENDING"}
+                    onChange={(e) => handleStatusChange(app.id, e.target.value)}
+                    className="w-full px-2 py-1 rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
                   >
-                    <option hidden value="Pending">Pending</option>
-                    <option selected={app.status == "SELECTED"} value="Selected">Selected</option>
-                    <option selected={app.status == "REJECTED"} value="Rejected">Rejected</option>
+                    <option value="PENDING">Pending</option>
+                    <option value="SELECTED">Selected</option>
+                    <option value="REJECTED">Rejected</option>
                   </select>
                 </td>
               </tr>
             ))}
+            {applications.length === 0 && (
+              <tr>
+                <td colSpan="5" className="text-center py-6 text-gray-500 dark:text-gray-400">
+                  No applications found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

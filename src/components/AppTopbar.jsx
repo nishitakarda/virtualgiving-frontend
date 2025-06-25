@@ -6,7 +6,7 @@ const AppTopbar = ({ toggleSidebar }) => {
   const location = useLocation();
 
   return (
-    <div className="w-full bg-white z-40 text-gray-900 dark:bg-gray-900 dark:text-white/70 shadow flex justify-between items-center px-6 py-4">
+    <div className="w-full  bg-white z-40 text-gray-900 dark:bg-gray-900 dark:text-white/70 shadow flex justify-between items-center px-6 py-4">
       <div className="flex items-center space-x-4">
         <FaBars
           className="text-2xl cursor-pointer md:hidden"

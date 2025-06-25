@@ -1,20 +1,11 @@
 import { useState } from 'react';
 
-const RequestMentorship = ({handleCancel}) => {
+const RequestMentorship = ({ handleCancel }) => {
   const [formData, setFormData] = useState({
     title: '',
-    companyName: '',
-    postedBy: '',
     description: '',
-    category: '',
-    location: '',
-    type: '',
-    salary: '',
-    duration: '',
-    logoUrl: '',
   });
 
-  const [logoFile, setLogoFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
   const handleChange = (e) => {
@@ -25,76 +16,78 @@ const RequestMentorship = ({handleCancel}) => {
     }));
   };
 
-  const handleLogoChange = (e) => {
-    const file = e.target.files[0];
-    setLogoFile(file);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const logoUrl = logoFile ? URL.createObjectURL(logoFile) : '';
-    const finalData = { ...formData, logoUrl };
+    setUploading(true);
 
-    const existingInternships = JSON.parse(localStorage.getItem("postedInternships")) || [];
-    localStorage.setItem("postedInternships", JSON.stringify([...existingInternships, finalData]));
+    // Simulate upload/store
+    const existingRequests = JSON.parse(localStorage.getItem("mentorshipRequests")) || [];
+    localStorage.setItem("mentorshipRequests", JSON.stringify([...existingRequests, formData]));
 
-    alert("Internship posted successfully!");
+    alert("Mentorship request submitted!");
 
-    setFormData({
-      title: '',
-      companyName: '',
-      postedBy: '',
-      description: '',
-      category: '',
-      location: '',
-      type: '',
-      salary: '',
-      duration: '',
-      logoUrl: '',
-    });
-    setLogoFile(null);
+    setFormData({ title: '', description: '' });
+    setUploading(false);
   };
 
   return (
-    <div className="flex  mt-8 px-4">
-      <div className="w-full max-w-3xl bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md overflow-y-auto max-h-[calc(100vh-7rem)]">
-        <h1 className="text-2xl font-bold text-sky-700 dark:text-sky-400 mb-6">Request Mentorship</h1>
+    <div className="flex justify-center mt-10 px-4">
+      <div className="w-full max-w-2xl bg-white dark:bg-gray-900 p-8 rounded-xl shadow-lg overflow-y-auto max-h-[calc(100vh-8rem)]">
+        <h2 className="text-3xl font-semibold text-sky-700 dark:text-sky-400 mb-6 text-center">
+          Request Mentorship
+        </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Title */}
           <div>
-            <label className="block font-medium mb-1 text-gray-800 dark:text-gray-200">Subject</label>
+            <label className="block text-sm font-medium mb-1 text-gray-800 dark:text-gray-200">
+              Subject
+            </label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
               required
-              className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-black dark:text-white border-gray-300 dark:border-gray-600"
+              placeholder="e.g. Career guidance in AI"
+              className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
             />
           </div>
 
+          {/* Description */}
           <div>
-            <label className="block font-medium mb-1 text-gray-800 dark:text-gray-200"> Description</label>
+            <label className="block text-sm font-medium mb-1 text-gray-800 dark:text-gray-200">
+              Description
+            </label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
               rows="4"
               required
-              className="w-full p-2 border rounded resize-none bg-white dark:bg-gray-800 text-black dark:text-white border-gray-300 dark:border-gray-600"
+              placeholder="Describe your mentorship needs in detail..."
+              className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-sky-500"
             />
           </div>
 
+          {/* Buttons */}
+          <div className="flex items-center justify-end gap-8 mt-6">
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="text-sm text-gray-600 dark:text-gray-300 hover:underline"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={uploading}
+              className="bg-sky-600 hover:bg-sky-700 disabled:bg-gray-400 text-white px-6 py-3 rounded transition duration-200"
+            >
+              {uploading ? 'Submitting...' : 'Submit Request'}
+            </button>
 
-          <button
-            type="submit"
-            disabled={uploading}
-            className="bg-teal-600 text-white px-6 py-3 rounded-xl hover:bg-teal-800 transition"
-          >
-            {uploading ? 'Uploading...' : 'Submit Request'}
-          </button>
-          <button className='ml-8' onClick={handleCancel}>Cancel</button>
+          </div>
         </form>
       </div>
     </div>

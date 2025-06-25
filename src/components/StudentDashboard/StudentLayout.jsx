@@ -11,7 +11,7 @@ const StudentLayout = () => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50 text-gray-700 dark:bg-gray-800 dark:text-white">
+    <div className="flex h-screen overflow-hidden bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-white">
       <StudentSidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
       {sidebarOpen && (

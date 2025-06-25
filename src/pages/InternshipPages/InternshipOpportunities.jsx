@@ -15,55 +15,73 @@ const InternshipOpportunities = () => {
 
   const [appliedInternships, setAppliedInternships] = useState([]);
   const [allInternships, setAllInternships] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchInternships = async () => {
-    const response = await axiosInstance.get('/internships/all');
-    if (response.status == 200) {
-      setAllInternships(response.data);
-    } else {
-      console.log(response);
+    try {
+      const response = await axiosInstance.get('/internships/all');
+      if (response.status === 200) {
+        setAllInternships(response.data);
+      } else {
+        toast.error("Failed to fetch internships.");
+      }
+    } catch (error) {
+      console.error("Error fetching internships:", error);
+      toast.error("Something went wrong while fetching internships.");
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+
   useEffect(() => {
     fetchInternships();
   }, []);
 
   const handleFilterChange = (e) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
+    const { name, value, type: inputType, checked } = e.target;
+
+    if (Array.isArray(filters[name])) {
+      const updatedArray = checked
+        ? [...filters[name], value]
+        : filters[name].filter((item) => item !== value);
+      setFilters((prev) => ({ ...prev, [name]: updatedArray }));
+    } else {
+      setFilters((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleApply = async (internship_id) => {
     try {
       const response = await axiosInstance.post(`/applications/apply/${internship_id}`);
-      toast.success(response.data);
-    }
-    catch (e) {
-      console.log(e);
-      toast.error(e.response.data);
+      toast.success(response.data || "Applied successfully!");
+      setAppliedInternships((prev) => [...prev, { id: internship_id }]);
+    } catch (error) {
+      console.error("Error applying:", error);
+      toast.error(error?.response?.data || "Application failed");
     }
   };
 
   const filteredInternships = allInternships.filter((job) => {
     return (
-      (filters.category === "" || job.role === filters.category) &&
+      (!filters.category || job.role === filters.category) &&
       (filters.type.length === 0 || filters.type.includes(job.type)) &&
-      (filters.location === "" || job.location === filters.location) &&
-      (filters.duration === "" || job.duration === filters.duration) &&
+      (!filters.location || job.location === filters.location) &&
+      (!filters.duration || job.duration === filters.duration) &&
       (filters.salary.length === 0 || filters.salary.includes(job.salary))
     );
   });
 
   return (
-    <div className="flex flex-col grow">
-
-      <div className="flex flex-1 ">
+    <div className="flex flex-col grow min-h-screen">
+      <div className="flex flex-1 flex-col md:flex-row">
         <FiltersSidebar filters={filters} onFilterChange={handleFilterChange} />
 
         <main className="flex-1 p-6 md:p-8 relative">
-          <h1 className="text-lg md:text-2xl mb-6">Latest Internship Opportunities</h1>
 
-          {
-            filteredInternships.length != 0 ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+          {loading ? (
+            <p className="text-center text-gray-500 dark:text-gray-300">Loading internships...</p>
+          ) : filteredInternships.length > 0 ? (
+            <div className=" gap-6">
               {filteredInternships.map((internship) => (
                 <InternshipCard
                   key={internship.id}
@@ -72,11 +90,13 @@ const InternshipOpportunities = () => {
                   isApplied={appliedInternships.some((i) => i.id === internship.id)}
                 />
               ))}
-            </div> : <div className="w-48 flex flex-col text-center gap-4  absolute top-[50%] left-[25%] md:left-[35%]  -translate-y-[50%]">
-              <img src="/not_found.webp" />
-              <p to={'/internship-opportunities'} className=" rounded">Not Available</p>
             </div>
-          }
+          ) : (
+            <div className="flex flex-col items-center justify-center gap-4 absolute inset-0">
+              <img src="/not_found.webp" alt="Not Found" className="w-40 h-40 object-contain opacity-75" />
+              <p className="text-lg text-gray-500 dark:text-gray-300">No internships found</p>
+            </div>
+          )}
         </main>
       </div>
     </div>

@@ -1,78 +1,97 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from "../../components/LoadingSpinner";
 import axiosInstance from "../../utils/axiosInstance";
 
 const MentorshipManager = () => {
-
-  const [internships, setInternships] = useState([]);
+  const [mentorships, setMentorships] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchInternships = async () => {
+  const fetchMentorships = async () => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get('/mentorships/my');
-
-      if (response.status == 200) {
-        console.log(response);
-        
-        setInternships(response.data);
+      const response = await axiosInstance.get("/mentorships/my");
+      if (response.status === 200) {
+        setMentorships(response.data);
       } else {
-        console.log(response);
+        toast.error("Failed to fetch mentorships");
       }
     } catch (e) {
       toast.error(e.message);
+    } finally {
+      setLoading(false);
     }
-    finally {setLoading(false);}
-  }
+  };
 
- useEffect(()=>{
-  fetchInternships();
- },[]);
+  useEffect(() => {
+    fetchMentorships();
+  }, []);
 
   return (
     <>
       {loading && <LoadingSpinner />}
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 px-6 py-8">
-        <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-          Posted Internships
-        </h1>
+      <div className="min-h-screen px-4 py-10 md:px-16 bg-gradient-to-tr from-gray-100 to-sky-100 dark:from-gray-900 dark:to-gray-800">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-4xl font-bold text-center mb-10 text-teal-700 dark:text-teal-300">
+            Your Mentorship Posts
+          </h1>
 
-        <div className="overflow-x-auto">
-          {
-            internships.length != 0 ? <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg shadow">
-              <thead className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 uppercase text-sm">
-                <tr>
-                  <th className="py-3 px-6 text-left">id</th>
-                  <th className="py-3 px-6 text-left">Topic</th>
-                  <th className="py-3 px-6 text-left">Date</th>
-                  <th className="py-3 px-6 text-left">Max Participants</th>
-                  <th className="py-3 px-6 text-left">Applications</th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-800 dark:text-gray-100">
-                {internships?.map((intern) => (
-                  <tr key={intern?.id} className="border-t border-gray-300 dark:border-gray-700">
-                    <td className="py-3 px-6">{intern?.id}</td>
-                    <td className="py-3 px-6">{intern?.topic}</td>
-                    <td className="py-3 px-6">{new Date(intern?.dateTime).toLocaleString() || 'unknown'}</td>
-                    <td className="py-3 px-6">{intern?.maxParticipants}</td>
-                    <td className="py-3 px-6">
-                      <Link to={`/internship-application/1`}
-                        className="text-blue-500 underline"
-                      >
-                        View Applications
-                      </Link>
-                    </td>
+          {mentorships.length ? (
+            <div className="overflow-x-auto rounded-lg shadow-lg">
+              <table className="min-w-full bg-white dark:bg-gray-900 text-sm md:text-base">
+                <thead className="bg-teal-600 text-white">
+                  <tr>
+                    <th className="py-3 px-4 text-left">#ID</th>
+                    <th className="py-3 px-4 text-left">Topic</th>
+                    <th className="py-3 px-4 text-left">Date & Time</th>
+                    <th className="py-3 px-4 text-left">Max Participants</th>
+                    <th className="py-3 px-4 text-left">Applications</th>
                   </tr>
-                ))}
-              </tbody>
-            </table> : <div className="w-48 flex flex-col text-center gap-4  absolute top-[50%] left-[25%] md:left-[50%] -translate-y-[50%]">
-              <img src="/not_found.webp" />
-              <Link to={'/post-internship'} className="text-teal-600 border border-teal-600 p-4 rounded">Post Internships</Link>
+                </thead>
+                <tbody className="text-gray-700 dark:text-gray-200">
+                  {mentorships.map((mentorship, index) => (
+                    <tr
+                      key={mentorship.id}
+                      className={`border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition duration-150`}
+                    >
+                      <td className="py-3 px-4 font-medium">{index + 1}</td>
+                      <td className="py-3 px-4">{mentorship.topic}</td>
+                      <td className="py-3 px-4">
+                        {new Date(mentorship.dateTime).toLocaleString()}
+                      </td>
+                      <td className="py-3 px-4">{mentorship.maxParticipants}</td>
+                      <td className="py-3 px-4">
+                        <Link
+                          to={`/mentorship-application/${mentorship.id}`}
+                          className="inline-block bg-sky-600 text-white px-4 py-1.5 rounded-lg hover:bg-sky-700 transition"
+                        >
+                          View Applications
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          }
+          ) : (
+            <div className="flex flex-col items-center justify-center mt-20 text-center gap-6">
+              <img
+                src="/not_found.webp"
+                alt="No Mentorships"
+                className="w-60 opacity-80"
+              />
+              <p className="text-lg text-gray-600 dark:text-gray-300">
+                You haven’t posted any mentorships yet.
+              </p>
+              <Link
+                to="/post-mentorship"
+                className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-xl transition duration-200 shadow-md"
+              >
+                Post Your First Mentorship
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </>

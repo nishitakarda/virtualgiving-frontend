@@ -19,6 +19,9 @@ const HomePage = () => {
       <NavBar />
       <ImageCarousel />
       <ImpactMetrics />
+      <footer className='py-4 bg-black/30 w-full text-center'>
+        &copy; Copyright 2025 - Virtual Giving & Volunteering 
+      </footer>
     </div>
   )
 }
