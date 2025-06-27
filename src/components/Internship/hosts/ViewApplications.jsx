@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axiosInstance from '../../../utils/axiosInstance';
 import LoadingSpinner from '../../LoadingSpinner';
@@ -75,18 +75,7 @@ const ViewApplications = () => {
                 <td className="px-4 py-3">{app?.student?.name}</td>
                 <td className="px-4 py-3">{app?.student?.email}</td>
                 <td className="px-4 py-3">
-                  {app.resume ? (
-                    <a
-                      href={app.resume}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:underline font-medium"
-                    >
-                      View
-                    </a>
-                  ) : (
-                    <span className="text-gray-400 italic">Not available</span>
-                  )}
+                 <Link className='text-blue-600' to={`/${localStorage.getItem('role').toLowerCase()}/view-profile/${app?.student?.id}`} >View Profile</Link>
                 </td>
                 <td className="px-4 py-3">
                   <select

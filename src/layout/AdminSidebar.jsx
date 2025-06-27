@@ -1,28 +1,20 @@
 import {
-  FaBriefcase,
-  FaBullhorn,
-  FaDonate,
-  FaFileAlt,
-  FaTachometerAlt,
-  FaUserCircle,
+  FaUsers,
+  FaBoxOpen,
+  FaChartBar,
   FaSignOutAlt,
-  FaSearch,
+  FaTools,
 } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-const StudentSidebar = ({ isOpen, toggleSidebar }) => {
+const AdminSidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
   const links = [
-    { to: '/student-profile', label: 'Profile', icon: <FaUserCircle /> },
-     { to: '/students/all-users', label: 'Search', icon: <FaSearch /> },
-    { to: '/student-dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
-     { to: '/request-mentorships', label: 'Request Mentorship', icon: <FaTachometerAlt /> },
-    { to: '/mentorship-opportunities', label: 'Mentorship Opportunities', icon: <FaBullhorn /> },
-     { to: '/students/request-donation', label: 'Request Donation ', icon: <FaDonate /> },
-    { to: '/internship-opportunities', label: 'Internship Opportunities', icon: <FaBriefcase /> },
-    { to: '/applied-internships', label: 'Internship Applications', icon: <FaFileAlt /> },
+    { to: '/admin/users', label: 'Manage Users', icon: <FaUsers /> },
+    { to: '/admin/donations', label: 'Manage Donations', icon: <FaBoxOpen /> },
+    { to: '/admin/reports', label: 'Reports', icon: <FaChartBar /> },
   ];
 
   const handleLogout = () => {
@@ -45,9 +37,9 @@ const StudentSidebar = ({ isOpen, toggleSidebar }) => {
       <div>
         <div className="text-center flex items-center justify-between p-4 border-b border-gray-300 dark:border-gray-700 relative">
           <div className="flex items-center gap-2">
-            <img className="w-10" src="/logo2.png" alt="Logo" />
+            <FaTools className="text-blue-600 dark:text-blue-400 text-xl" />
             <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Virtual Giving
+              Admin Panel
             </h1>
           </div>
 
@@ -97,4 +89,4 @@ const StudentSidebar = ({ isOpen, toggleSidebar }) => {
   );
 };
 
-export default StudentSidebar;
+export default AdminSidebar;

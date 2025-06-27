@@ -51,101 +51,103 @@ const PostMentorship = () => {
   if (uploading) return <LoadingSpinner />;
 
   return (
-    <div className="flex justify-center px-4 py-8">
-      <div className="w-full max-w-2xl bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
-        <h1 className="text-2xl sm:text-3xl font-bold text-sky-700 dark:text-sky-400 mb-6 text-center">
-          📅 Post Mentorship
-        </h1>
+    <div className="px-4 py-10 md:px-16 bg-gray-100 dark:bg-gray-900">
+      <h1 className="text-3xl font-bold text-blue-700 dark:text-blue-400 mb-10">
+        📅 Post a New Mentorship
+      </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Topic */}
-          <div>
-            <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-              Topic
-            </label>
-            <input
-              type="text"
-              name="topic"
-              value={formData.topic}
-              onChange={handleChange}
-              required
-              className="w-full p-3 border rounded-md bg-white dark:bg-gray-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
-            />
-          </div>
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6 max-w-2xl"
+      >
+        {/* Topic */}
+        <div>
+          <label className="block text-gray-800 dark:text-gray-200 font-medium mb-1">
+            Topic
+          </label>
+          <input
+            type="text"
+            name="topic"
+            value={formData.topic}
+            onChange={handleChange}
+            required
+            placeholder="e.g. Cracking Coding Interviews"
+            className="w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
+          />
+        </div>
 
-          {/* Description */}
-          <div>
-            <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-              Description
-            </label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows="4"
-              required
-              className="w-full p-3 border rounded-md resize-none bg-white dark:bg-gray-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
-            />
-          </div>
+        {/* Description */}
+        <div>
+          <label className="block text-gray-800 dark:text-gray-200 font-medium mb-1">
+            Description
+          </label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            rows="4"
+            required
+            placeholder="Provide details about the mentorship topic, objectives, expectations..."
+            className="w-full px-4 py-2 border rounded-lg resize-none bg-white dark:bg-gray-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
+          />
+        </div>
 
-          {/* Date & Time */}
-          <div>
-            <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-              Date & Time
-            </label>
-            <input
-              type="datetime-local"
-              name="dateTime"
-              value={formData.dateTime}
-              onChange={handleChange}
-              required
-              className="w-full p-3 border rounded-md bg-white dark:bg-gray-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
-            />
-          </div>
+        {/* Date & Time */}
+        <div>
+          <label className="block text-gray-800 dark:text-gray-200 font-medium mb-1">
+            Date & Time
+          </label>
+          <input
+            type="datetime-local"
+            name="dateTime"
+            value={formData.dateTime}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
+          />
+        </div>
 
-          {/* Max Participants */}
-          <div>
-            <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-              Max Participants
-            </label>
-            <input
-              type="number"
-              name="maxParticipants"
-              min="1"
-              value={formData.maxParticipants}
-              onChange={handleChange}
-              required
-              className="w-full p-3 border rounded-md bg-white dark:bg-gray-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
-            />
-          </div>
+        {/* Max Participants */}
+        <div>
+          <label className="block text-gray-800 dark:text-gray-200 font-medium mb-1">
+            Max Participants
+          </label>
+          <input
+            type="number"
+            name="maxParticipants"
+            min="1"
+            value={formData.maxParticipants}
+            onChange={handleChange}
+            required
+            placeholder="e.g. 50"
+            className="w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
+          />
+        </div>
 
-          {/* Registration Deadline */}
-          <div>
-            <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">
-              Registration Deadline
-            </label>
-            <input
-              type="datetime-local"
-              name="registrationDeadline"
-              value={formData.registrationDeadline}
-              onChange={handleChange}
-              required
-              className="w-full p-3 border rounded-md bg-white dark:bg-gray-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
-            />
-          </div>
+        {/* Registration Deadline */}
+        <div>
+          <label className="block text-gray-800 dark:text-gray-200 font-medium mb-1">
+            Registration Deadline
+          </label>
+          <input
+            type="datetime-local"
+            name="registrationDeadline"
+            value={formData.registrationDeadline}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
+          />
+        </div>
 
-          {/* Submit Button */}
-          <div className="text-center">
-            <button
-              type="submit"
-              disabled={uploading}
-              className="bg-blue-600 w-full hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition"
-            >
-              {uploading ? 'Posting...' : 'Post Mentorship'}
-            </button>
-          </div>
-        </form>
-      </div>
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={uploading}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition"
+        >
+          {uploading ? 'Posting...' : 'Post Mentorship'}
+        </button>
+      </form>
     </div>
   );
 };

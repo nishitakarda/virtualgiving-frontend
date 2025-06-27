@@ -13,7 +13,7 @@ import AdminLogin from './pages/auth/AdminLogin';
 
 // Layouts
 import MainLayout from './layout/MainLayout';
-import StudentLayout from './components/StudentDashboard/StudentLayout';
+import StudentLayout from './layout/StudentLayout';
 import AlumniLayout from './layout/AlumniLayout';
 import AdminLayout from './layout/AdminLayout';
 
@@ -24,6 +24,7 @@ import AlumniDashboard from './components/AlumniDashboard/AlumniDashboard';
 // Profile & Common Pages
 import Profile from './pages/Profile';
 import AllUsers from './pages/AllUsers';
+import ViewUserProfile from './pages/ViewUserProfile'
 
 // Internship Pages
 import InternshipOpportunities from './pages/InternshipPages/InternshipOpportunities';
@@ -46,6 +47,7 @@ import DonationRequests from './pages/donations/DonationRequests';
 
 // Admin Pages
 import ManageUsers from './pages/admin/ManageUsers';
+import Reports from './pages/admin/Reports'
 
 function App() {
   const navigate = useNavigate();
@@ -70,6 +72,7 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="users" element={<ManageUsers />} />
           <Route path="donations" element={<ManageDonations />} />
+          <Route path="reports" element={<Reports />} />
         </Route>
 
         {/* Student Routes */}
@@ -82,6 +85,7 @@ function App() {
           <Route path="/student-profile" element={<Profile />} />
           <Route path="/students/all-users" element={<AllUsers />} />
           <Route path="/students/request-donation" element={<CreateDonationRequest />} />
+          <Route path="/students/view-profile/:id" element={<ViewUserProfile />} />
         </Route>
 
         {/* Alumni Routes */}
@@ -96,6 +100,7 @@ function App() {
           <Route path="/alumni-profile" element={<Profile />} />
           <Route path="/alumni/all-users" element={<AllUsers />} />
           <Route path="/donation-requests" element={<DonationRequests />} />
+          <Route path="/alumni/view-profile/:id" element={<ViewUserProfile />} />
         </Route>
 
       </Routes>

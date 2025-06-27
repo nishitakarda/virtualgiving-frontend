@@ -15,10 +15,10 @@ const InternshipManager = () => {
       if (response.status === 200) {
         setInternships(response.data);
       } else {
-        console.log(response);
+        toast.error("Failed to fetch internships");
       }
     } catch (e) {
-      toast.error(e.message);
+      toast.error(e.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -33,12 +33,12 @@ const InternshipManager = () => {
       {loading && <LoadingSpinner />}
 
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 px-4 sm:px-6 lg:px-20 py-8">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+        <h1 className="text-3xl font-bold mb-8 text-center text-blue-800 dark:text-blue-400 flex items-center justify-center gap-2">
           📋 Posted Internships
         </h1>
 
-        <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-xl shadow-md">
-          {internships.length !== 0 ? (
+        {internships.length > 0 ? (
+          <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-xl shadow-md">
             <table className="min-w-full table-auto text-sm sm:text-base">
               <thead className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 uppercase">
                 <tr>
@@ -57,12 +57,12 @@ const InternshipManager = () => {
                   >
                     <td className="py-3 px-4">{intern.id}</td>
                     <td className="py-3 px-4">{intern.title}</td>
-                    <td className="py-3 px-4">{intern.salary || 'Unknown'}</td>
+                    <td className="py-3 px-4">{intern.salary || 'N/A'}</td>
                     <td className="py-3 px-4">{intern.location}</td>
                     <td className="py-3 px-4">
                       <Link
                         to={`/internship-application/${intern.id}`}
-                        className="text-blue-600 hover:underline font-medium"
+                        className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
                       >
                         View Applications
                       </Link>
@@ -71,25 +71,25 @@ const InternshipManager = () => {
                 ))}
               </tbody>
             </table>
-          ) : (
-            <div className="flex flex-col items-center justify-center mt-16 text-center">
-              <img
-                src="/not_found.webp"
-                alt="No Internships"
-                className="w-64 sm:w-80 mb-6"
-              />
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
-                No internships posted yet.
-              </p>
-              <Link
-                to="/post-internship"
-                className="text-white bg-teal-600 hover:bg-teal-700 px-6 py-2 rounded-lg shadow-md"
-              >
-                ➕ Post an Internship
-              </Link>
-            </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center mt-20 text-center gap-6">
+            <img
+              src="/not_found.webp"
+              alt="No Internships"
+              className="w-48 sm:w-64 object-contain"
+            />
+            <p className="text-gray-700 dark:text-gray-300">
+              No internships posted yet.
+            </p>
+            <Link
+              to="/post-internship"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-md transition"
+            >
+              Post an Internship
+            </Link>
+          </div>
+        )}
       </div>
     </>
   );

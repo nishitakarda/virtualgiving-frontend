@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import AppTopbar from '../AppTopbar';
-import StudentSidebar from './StudentSidebar';
+import AppTopbar from '../components/AppTopbar';
+import StudentSidebar from '../components/StudentDashboard/StudentSidebar';
 
 const StudentLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);

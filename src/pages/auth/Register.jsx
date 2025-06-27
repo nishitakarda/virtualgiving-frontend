@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import axios from '../../utils/axiosInstance';
 import { FaUserGraduate, FaUserTie } from 'react-icons/fa';
+import axiosInstance from '../../utils/axiosInstance';
 
 const roleOptions = [
   { label: 'Student', value: 'STUDENT', icon: <FaUserGraduate /> },
@@ -66,23 +67,15 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         '/auth/signup',
         { ...formData, role },
         { withCredentials: true }
       );
 
-      const { token, email, role: userRole } = response.data;
-      if (!token || !userRole) throw new Error('Invalid signup response');
-
-      localStorage.setItem('token', token);
-      localStorage.setItem('email', email);
-      localStorage.setItem('role', userRole);
-
-      const route = userRole?.toUpperCase();
-      if (route === 'STUDENT') navigate('/student-dashboard');
-      else if (route === 'ALUMNI') navigate('/alumni-dashboard');
-      else toast.error('Invalid role detected');
+      if(response.status == 200){
+        navigate('/login')
+      }
     } catch (err) {
       toast.error(err?.response?.data?.error || 'Registration failed!');
     } finally {

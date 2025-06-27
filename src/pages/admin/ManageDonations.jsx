@@ -2,90 +2,104 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axiosInstance from "../../utils/axiosInstance";
 import { MdEmail, MdPhone } from "react-icons/md";
+import { motion, AnimatePresence } from "framer-motion";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const ManageDonations = () => {
   const [pendingDonations, setPendingDonations] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch only pending Donations
+  const fetchPendingDonations = async () => {
+    try {
+      const response = await axiosInstance.get("/admin/pending-donations");
+      setPendingDonations(response.data);
+    } catch (error) {
+      console.error("Error fetching pending donations:", error);
+      toast.error("Failed to load pending donations.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchPendingDonations = async () => {
-      try {
-        const response = await axiosInstance.get("/admin/pending-donations");
-        setPendingDonations(response.data);
-      } catch (error) {
-        console.error("Error fetching pending Donations:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchPendingDonations();
   }, []);
 
-  const handleApprove = async (donationId) => {
+  const handleStatusUpdate = async (donationId, status) => {
     try {
       setLoading(true);
-      await axiosInstance.post(`/admin/update-donation-status`, { donationRequestId:donationId, status: 'APPROVED' });
-      setPendingDonations((prev) => prev.filter((u) => u.id !== donationId));
-      toast.success("Updated Successfully")
+      await axiosInstance.post(`/admin/update-donation-status`, {
+        donationRequestId: donationId,
+        status,
+      });
+      setPendingDonations((prev) => prev.filter((d) => d.id !== donationId));
+      toast.success(`Donation ${status.toLowerCase()}ed successfully`);
     } catch (err) {
-      toast.error(err.data?.message);
+      toast.error(err?.response?.data?.message || "Update failed.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleReject = async (donationId) => {
-    try {
-      setLoading(true);
-      await axiosInstance.post(`/admin/update-donation-status`, { donationRequestId: donationId, status: 'REJECT' });
-      setPendingDonations((prev) => prev.filter((u) => u.id !== donationId));
-      toast.success("Updated Successfully")
-    } catch (err) {
-      toast.error(err.data?.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) return <p className="text-center py-10">Loading Donations...</p>;
+  if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-6 text-center">Pending Donations</h2>
+    <div className="max-w-5xl mx-auto px-4 py-10">
+      <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-8">
+        Pending Donation Requests
+      </h2>
+
       {pendingDonations.length === 0 ? (
-        <p className="text-center text-gray-600">No pending Donations.</p>
+        <div className="text-center text-gray-600 dark:text-gray-300 text-lg">
+          🎉 No pending donations!
+        </div>
       ) : (
-        <ul className="space-y-4">
-          {pendingDonations.map((donation) => (
-            <li
-              key={donation.id}
-              className="flex items-center justify-between p-4 bg-white shadow rounded-lg"
-            >
-              <div className="flex items-center space-x-4">
-                <div>
-                  <p className="font-medium text-lg">{donation.title}</p>
-                  <p className="text-sm text-gray-500">{donation.description}</p>
-                  <p className="text-sm text-gray-500"><MdEmail color="black" className="inline mr-2" />{donation.email}</p>
-                  <p className="text-sm text-gray-500"><MdPhone color="black" className="inline mr-2" />{donation.phone}</p>
+        <ul className="space-y-6">
+          <AnimatePresence>
+            {pendingDonations.map((donation) => (
+              <motion.li
+                key={donation.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="p-5 bg-white dark:bg-gray-800 rounded-xl shadow-md"
+              >
+                {/* Content */}
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                      {donation.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      {donation.description}
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
+                      <MdEmail className="text-blue-500" /> {donation.email}
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
+                      <MdPhone className="text-green-500" /> {donation.phone}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3 self-start sm:self-center">
+                    <button
+                      onClick={() => handleStatusUpdate(donation.id, "APPROVED")}
+                      className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md transition font-medium"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => handleStatusUpdate(donation.id, "REJECT")}
+                      className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-md transition font-medium"
+                    >
+                      Reject
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => handleApprove(donation.id)}
-                  className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 transition"
-                >
-                  Approve
-                </button>
-                <button
-                  onClick={() => handleReject(donation.id)}
-                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
-                >
-                  Reject
-                </button>
-              </div>
-            </li>
-          ))}
+              </motion.li>
+            ))}
+          </AnimatePresence>
         </ul>
       )}
     </div>

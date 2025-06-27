@@ -3,7 +3,7 @@ import { store } from '../redux/store';
 import { navigate } from './navigationHelper'; 
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080/api', //'https://virtualgiving-backend.onrender.com/api'
+  baseURL: 'https://virtualgiving-backend.onrender.com/api', //  'http://localhost:8080/api'
   withCredentials: true,
 });
 
