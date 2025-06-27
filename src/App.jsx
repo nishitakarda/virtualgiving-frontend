@@ -10,6 +10,11 @@ import HomePage from './pages/HomePage';
 import Register from './pages/auth/Register';
 import Login from './pages/auth/Login';
 import AdminLogin from './pages/auth/AdminLogin';
+// Forgot Password 
+import ForgotPassword from './pages/auth/ForgotPassword';
+import VerifyOtp from './pages/auth/VerifyOtp';
+import ResetPassword from './pages/auth/ResetPassword';
+
 
 // Layouts
 import MainLayout from './layout/MainLayout';
@@ -66,6 +71,11 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin-login" element={<AdminLogin />} />
+
+          {/* Forgot Password Routes */}
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/verify-otp" element={<VerifyOtp />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
 
         {/* Admin Routes */}
